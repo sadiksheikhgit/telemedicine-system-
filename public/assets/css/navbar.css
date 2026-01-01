@@ -1,0 +1,64 @@
+body {
+    font-family: Roboto, sans-serif;
+}
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 40px 0 40px;
+    padding: 10px 20px;
+}
+header img {
+    margin-right: 40px;
+}
+
+.header-nav {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 600px;
+    overflow: hidden;
+    background-color: #134074;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.navigation a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 14px 16px;
+}
+
+.navigation li a:hover {
+    background-color: #0077b6;
+    transition: 0.2s all ease-in-out;
+}
+
+.active {
+    background-color: #0077b6;
+}
+
+.auth {
+    margin: auto;
+    display: flex;
+    gap: 10px;
+    list-style-type: none;
+}
+
+.auth a {
+    background-color: #134074;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}

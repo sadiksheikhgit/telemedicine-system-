@@ -16,7 +16,7 @@ class App
     public function loadController()
     {
         $URL = $this->splitURL();
-        var_dump($URL);
+//        var_dump($URL);
         $filename = "../app/controllers/" . ucfirst($URL[0]) . ".php";
         if (file_exists($filename)) {
             require_once $filename;

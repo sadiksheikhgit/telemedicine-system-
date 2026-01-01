@@ -21,7 +21,7 @@ class Home
 //        $result = $user->insert($arr);
 //        $result = $user->where(['id'=>16]);
         $result = $user->find_all();
-        show($result);
+//        show($result);
         // Load the home view
         $this->view('home');
     }

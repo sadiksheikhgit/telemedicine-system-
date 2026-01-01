@@ -26,6 +26,10 @@ function init_session()
         session_start();
     }
 }
+function is_nav_active($path){
+    $current = $_GET['url'] ?? 'home';
+    return strpos($current, $path) === 0 ? 'active' : '';
+}
 
 function generate_token($length = 64)
 {

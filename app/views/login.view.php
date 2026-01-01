@@ -6,8 +6,8 @@
 <body>
 <header>
     <div class="logo">
-        <img src="<?php echo ROOT ?>/assets/images//logos/T-shaped.png" alt="Telemedicine++ Logo" width="100"
-             height="100">
+        <a href="<?php echo ROOT ?>/home"><img src="<?php echo ROOT ?>/assets/images//logos/T-shaped.png" alt="Telemedicine++ Logo" width="100"
+             height="100"></a>
         <div class="tele-name">Telemedicine++</div>
     </div>
 </header>

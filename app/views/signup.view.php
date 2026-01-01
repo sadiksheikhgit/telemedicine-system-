@@ -6,6 +6,14 @@
 </head>
 <body>
 <div class="container">
+        <header class="signup-header">
+            <div class="logo">
+                <a href="<?php echo ROOT ?>/home"><img src="<?php echo ROOT ?>/assets/images//logos/T-shaped.png"
+                                                       alt="Telemedicine++ Logo" width="100"
+                                                       height="100"></a>
+                <div class="tele-name">Telemedicine++</div>
+            </div>
+        </header>
     <div class="signup-box">
         <div class="button-group">
             <h2>Create an account as a</h2>
@@ -110,7 +118,8 @@
 
                 <button type="submit" class="confirm-button">Confirm</button>
                 <a href="#" class="back-btn">
-                    <img src="<?php echo ROOT ?>/assets/images/logos/arrow-left.svg" alt="arrow-left" width="40" height="40">
+                    <img src="<?php echo ROOT ?>/assets/images/logos/arrow-left.svg" alt="arrow-left" width="40"
+                         height="40">
                 </a>
             </form>
         </div>

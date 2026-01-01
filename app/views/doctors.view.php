@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="<?php echo ROOT ?>/assets/css/doctors.css">
 </head>
 <body>
-<h3>Doctors</h3>
+<?php require_once 'C:\xampp\htdocs\telemedicine-system-\app\views\components\navbar.php'; ?>
+
 <div class="container">
     <div class="grid-container">
         <div class="sidebar">
@@ -57,7 +58,7 @@
             <div class="text-center">
                 <p style="display: none;" id="loader">Loading...</p>
             </div>
-            <!-- cards-grid: responsive grid of cards -->
+
 
             <div class="cards-grid" id="result">
                 <?php if (!empty($all_doctors)) { ?>
@@ -120,7 +121,7 @@
                                 </div>
 
 
-                                <a href="<?php echo ROOT ?>/appointments/create/<?php echo htmlspecialchars($doctor->d_id); ?>"
+                                <a href="<?php echo ROOT ?>/appointments/create/<?php echo htmlspecialchars($doctor->id); ?>"
                                    class="btn btn-primary">Book Appointment</a>
 
                             </div>
@@ -132,8 +133,14 @@
                     <?php } ?>
                 </div>
             </div>
-        </div> <!-- end grid-container -->
+        </div>
     </div>
-    <!--<script src="--><?php //echo ROOT ?><!--/assets/js/doctors.js"></script>-->
+</div>
+</div>
+</div>
+
+
+<?php require_once 'C:\xampp\htdocs\telemedicine-system-\app\views\components\footer.php' ?>
 </body>
+
 </html>

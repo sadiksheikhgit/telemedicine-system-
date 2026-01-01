@@ -1,4 +1,14 @@
-<link rel="stylesheet" href="<?php echo ROOT ?>/assets/css/home.css">
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <link rel="stylesheet" href="<?php echo ROOT ?>/assets/css/home.css">
+</head>
+<body>
+<?php require_once  'C:\xampp\htdocs\telemedicine-system-\app\views\components\navbar.php'; ?>
+<?php require_once  'C:\xampp\htdocs\telemedicine-system-\app\views\components\footer.php'; ?>
+</body>
+</html>
 
-<h1>Home View Page</h1>
-<img src="<?php echo ROOT ?>/assets/images/hero-1.jpg" alt="hero-1" width="500" height="500"> 
