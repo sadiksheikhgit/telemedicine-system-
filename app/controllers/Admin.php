@@ -43,35 +43,6 @@ class Admin
         }
         $doctor = new Doctor;
     
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['action']) && $_POST['action'] == 'update') {
-                $original_d_reg_no = $_POST['original_d_reg_no'];
-                $updatedData = [
-                    'd_reg_no' => $_POST['d_reg_no'],
-                    'd_first_name' => $_POST['d_first_name'],
-                    'd_last_name' => $_POST['d_last_name'],
-                    'd_title' => $_POST['d_title'],
-                    'd_birth_date' => $_POST['d_birth_date'],
-                    'd_gender' => $_POST['d_gender'],
-                    'd_specialty' => $_POST['d_specialty'],
-                    'd_email' => $_POST['d_email'],
-                    'd_password' => $_POST['d_password'],
-                    'd_phone_no' => $_POST['d_phone_no'],
-                    'd_avail_from' => $_POST['d_avail_from'],
-                    'd_avail_to' => $_POST['d_avail_to'],
-                    'd_avail_status' => $_POST['d_avail_status'],
-                    'd_fee' => $_POST['d_fee'],
-                    'd_rating' => $_POST['d_rating'],
-                ];
-                $doctor->update($original_d_reg_no, $updatedData, 'd_reg_no');
-            } else {
-                // Process form submission to add a new doctor
-                
-            }
-            // Redirect to avoid resubmission
-//            redirect('admin/manage_doctors');
-        }
         
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             // Process deletion of a doctor
@@ -135,6 +106,7 @@ class Admin
         $this->view('admin/add_doctor', ['errors' => $errors]);
     }
     public function update_doctor(){
+        $errors = [];
         $d_reg_no = $_GET['d_reg_no'];
         $doctor = new Doctor();
         $doctor_data = $doctor->first(['d_reg_no' => $d_reg_no]);
@@ -157,18 +129,6 @@ class Admin
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Content-Type: application/json');
-            $errors = validate_core($_POST);
-            if (!empty($errors)) {
-                echo json_encode([
-                    'status' => 'error',
-                    'errors' => $errors
-                ]);
-                exit;
-            }
-            echo json_encode([
-                'status' => 'success',
-                'message' => 'Form submitted successfully'
-            ]);
             $updatedData = [
                 'd_reg_no' => $_POST['d_reg_no'],
                 'd_first_name' => $_POST['d_first_name'],
@@ -186,6 +146,20 @@ class Admin
                 'd_fee' => $_POST['d_fee'],
                 'd_rating' => $_POST['d_rating']
             ];
+            $errors = validate_core($updatedData);
+            if (!empty($errors)) {
+                echo json_encode([
+                    'status' => 'error',
+                    'errors' => $errors
+                ]);
+                exit;
+            }
+
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Form submitted successfully'
+            ]);
+            
             $doctor->update($d_reg_no, $updatedData, 'd_reg_no');
             exit;
         }
