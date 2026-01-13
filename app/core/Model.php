@@ -24,14 +24,14 @@ trait Model
         mysqli_close($conn);
     }
 
-    public function find_all()
+    public function find_all($limit = 10)
     {
 //        $query = "SELECT * FROM $this->table ORDER BY $this->order_column $this->order_type limit $this->limit offset $this->offset";
 ////        var_dump($query);
 //        return $this->query($query);
         // mysqli procedural query
         $conn = $this->connect();
-        $query = "SELECT * FROM $this->table ORDER BY $this->order_column $this->order_type limit $this->limit offset $this->offset";
+        $query = "SELECT * FROM $this->table ORDER BY $this->order_column $this->order_type limit $limit offset $this->offset";
         $result = mysqli_query($conn, $query);
         if (mysqli_num_rows($result) > 0) {
             return mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -221,41 +221,77 @@ public function insert($data) // mysqli procedural insert
 //    }
     public function update($id, $data, $id_column = 'id')
     {
-        $keys = array_keys($data);
-        $query = "UPDATE $this->table SET ";
+        $setParts = [];
 
-        foreach ($keys as $key) {
-            $query .= $key . " = ?, ";
+        foreach ($data as $column => $value) {
+            $setParts[] = "$column = ?";
         }
-        $query = rtrim($query, ", ");
-        $query .= " WHERE $id_column = ? ";
+
+        $setClause = implode(", ", $setParts);
+
+        $query = "UPDATE {$this->table} SET {$setClause} WHERE {$id_column} = ?";
 
         $conn = $this->connect();
         $stmt = $conn->prepare($query);
-        if ($stmt) {
-            $types = str_repeat('s', count($data)) . 's';
-            $values = array_values($data);
-            $values[] = $id;
-            $stmt->bind_param($types, ...$values);
-            $stmt->execute();
 
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                return $result->fetch_array(MYSQLI_ASSOC);
-            }
-            $stmt->close();
-            $conn->close();
+        if (!$stmt) {
+            return false;
         }
+
+        $types = '';
+        $values = [];
+
+        foreach ($data as $value) {
+            if (is_int($value)) {
+                $types .= 'i';
+            } elseif (is_float($value)) {
+                $types .= 'd';
+            } elseif (is_string($value)) {
+                $types .= 's';
+            } else {
+                $types .= 'b';
+            }
+            $values[] = $value;
+        }
+
+        // bind ID (usually integer)
+        $types .= 'i';
+        $values[] = $id;
+
+        $stmt->bind_param($types, ...$values);
+
+        $result = $stmt->execute();
+
+        $stmt->close();
+        $conn->close();
+
+        return $result;
     }
 
+
+//    public function delete($id, $id_column = 'id')
+//    {
+//        $data[$id_column] = $id;
+//        $query = "DELETE FROM $this->table WHERE $id_column = :$id_column ";
+//
+//        echo $query;
+//        $this->query($query, $data);
+//        return false;
+//    }
+// mysqli procedural delete
     public function delete($id, $id_column = 'id')
     {
-        $data[$id_column] = $id;
-        $query = "DELETE FROM $this->table WHERE $id_column = :$id_column ";
-
-        echo $query;
-        $this->query($query, $data);
-        return false;
+        $conn = $this->connect();
+        $query = "DELETE FROM $this->table WHERE $id_column = ? ";
+        var_dump($query);
+        $stmt = $conn->prepare($query);
+        if ($stmt) {
+            $stmt->bind_param('i', $id);
+            $result = $stmt->execute();
+            $stmt->close();
+            $conn->close();
+            return $result;
+        }
     }
 
 }

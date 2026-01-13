@@ -26,9 +26,165 @@ function init_session()
         session_start();
     }
 }
-function is_nav_active($path){
+
+function is_nav_active($path)
+{
     $current = $_GET['url'] ?? 'home';
     return strpos($current, $path) === 0 ? 'active' : '';
+}
+
+function validate_core($data)
+{
+    $errors = [];
+    // validate d_reg_no
+    $d_reg_no = trim($data['d_reg_no'] ?? '');
+    if (empty($d_reg_no)) {
+        $errors['d_reg_no'] = "Registration number is required.";
+    } elseif (!preg_match('/^\d{16}$/', $d_reg_no)) {
+        $errors['d_reg_no'] = "Must be 16 digits";
+    }
+    // validate firstname 
+    $d_first_name = trim($data['d_first_name'] ?? '');
+    if (!empty($d_first_name)) {
+        if (!preg_match('/^[a-zA-Z]+$/', $d_first_name)) {
+            $errors['d_first_name'] = "First name can only contain letters.";
+        }
+        if (strlen($d_first_name) < 2 || strlen($d_first_name) > 30) {
+            $errors['d_first_name'] = "First name must be between 2 and 30 characters.";
+        }
+    } else {
+        $errors['d_first_name'] = "First name is required.";
+    }
+    //validate lastname
+    $d_last_name = trim($data['d_last_name'] ?? '');
+    if (!empty($d_last_name)) {
+        if (!preg_match('/^[a-zA-Z]+$/', $d_last_name)) {
+            $errors['d_last_name'] = "First name can only contain letters.";
+        }
+        if (strlen($d_last_name) < 2 || strlen($d_last_name) > 30) {
+            $errors['d_last_name'] = "First name must be between 2 and 30 characters.";
+        }
+    } else {
+        $errors['d_last_name'] = "Last name is required.";
+    }
+    // title validation
+    $d_title = trim($data['d_title'] ?? '');
+    if (empty($d_title)) {
+        $errors['d_title'] = "Title is required.";
+    } elseif (!preg_match('/^[a-zA-Z]+$/', $d_title)) {
+        $errors['d_title'] = "Title can only contain letters.";
+    }    
+    //birthdate validation
+    $d_birth_date = trim($data['d_birth_date'] ?? '');
+    if (empty($d_birth_date)) {
+        $errors['d_birth_date'] = "Birthday is required.";
+    } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $d_birth_date)) {
+        $errors['d_birth_date'] = "Invalid date format. Use YYYY-MM-DD.";
+    } else {
+        $date_parts = explode('-', $d_birth_date);
+        if (!checkdate($date_parts[1], $date_parts[2], $date_parts[0])) {
+            $errors['d_birth_date'] = "Invalid date.";
+        }
+    }
+    //validate gender
+    $d_gender = trim($data['d_gender'] ?? '');
+    if (empty($d_gender)) {
+        $errors['d_gender'] = "Gender is required.";
+    }
+    // validate email
+    $d_email = trim($data['d_email'] ?? '');
+    if (empty($d_email)) {
+        $errors['d_email'] = "Email is required.";
+    } elseif (!filter_var($d_email, FILTER_VALIDATE_EMAIL)) {
+        $errors['d_email'] = "Invalid email format.";
+    }
+    // validate password
+    $d_password = trim($data['d_password'] ?? '');
+    if (empty($d_password)) {
+        $errors['d_password'] = "Password is required.";
+    } elseif (strlen($d_password) < 8) {
+        $errors['d_password'] = "Password must be at least 8 characters long.";
+    } elseif (!preg_match('/[A-Z]/', $d_password)) {
+        $errors['d_password'] = "Password must contain at least one uppercase letter.";
+    } elseif (!preg_match('/[a-z]/', $d_password)) {
+        $errors['d_password'] = "Password must contain at least one lowercase letter.";
+    } elseif (!preg_match('/\d/', $d_password)) {
+        $errors['d_password'] = "Password must contain at least one digit.";
+    } elseif (!preg_match('/[\W_]/', $d_password)) {
+        $errors['d_password'] = "Password must contain at least one special character.";
+    }
+    // validate specialty other than select
+    $d_specialty = trim($data['d_specialty'] ?? '');
+    if (empty($d_specialty) || $d_specialty == 'select') {
+        $errors['d_specialty'] = "Specialty is required.";
+    }
+    // validate phone no
+    $d_phone_no = trim($data['d_phone_no'] ?? '');
+    if (empty($d_phone_no)) {
+        $errors['d_phone_no'] = "Phone number is required.";
+    } elseif (!preg_match('/^[1-9]\d{9}$/', $d_phone_no)) {
+        $errors['d_phone_no'] = "Invalid phone number format.";
+    }
+    //date cannot be future date
+    $current_date = date('Y-m-d');
+    $d_avail_from = trim($data['d_avail_from'] ?? '');
+    $d_avail_to = trim($data['d_avail_to'] ?? '');
+    if (!empty($d_avail_from) && !empty($d_avail_to)) {
+        if ($d_avail_from > $d_avail_to) {
+            $errors['d_avail_to'] = "Availability 'to' date cannot be earlier than 'from' date.";
+        }
+    }
+    if (!empty($d_avail_from)) {
+        if ($d_avail_from < $current_date) {
+            $errors['d_avail_from'] = "Availability 'from' date cannot be a past date.";
+        }
+    }
+    if (!empty($d_avail_to)) {
+        if ($d_avail_to < $current_date) {
+            $errors['d_avail_to'] = "Availability 'to' date cannot be a past date.";
+        }
+    }
+    // validate availability status
+    $d_avail_status = trim($data['d_avail_status'] ?? '');
+    if (empty($d_avail_status)) {
+        $errors['d_avail_status'] = "Availability status is required.";
+    }
+    // validate fee
+    $d_fee = trim($data['d_fee'] ?? '');
+    if (empty($d_fee)) {
+        $errors['d_fee'] = "Consultation fee is required.";
+    } elseif (!is_numeric($d_fee) || $d_fee < 0) {
+        $errors['d_fee'] = "Consultation fee must be a non-negative number.";
+    }
+    // validate rating
+    $d_rating = trim($data['d_rating'] ?? '');
+    if (empty($d_rating)) {
+        $errors['d_rating'] = "Rating is required.";
+    } elseif (!is_numeric($d_rating) || $d_rating < 0 || $d_rating > 5) {
+        $errors['d_rating'] = "Rating must be a number between 0 and 5.";
+    }
+    // store after validation
+//        if (empty($errors)) {
+//        }
+    $_POST['d_reg_no'] = $d_reg_no;
+    $_POST['d_first_name'] = ucfirst($d_first_name);
+    $_POST['d_last_name'] = ucfirst($d_last_name);
+    $_POST['d_title'] = ucfirst($d_title);
+    $_POST['d_birth_date'] = $d_birth_date;
+    $_POST['d_gender'] = $d_gender;
+    $_POST['d_email'] = strtolower($d_email);
+    $_POST['d_password'] = password_hash($d_password, PASSWORD_BCRYPT);
+    $_POST['d_specialty'] = $d_specialty;
+    $_POST['d_phone_no'] = "+880" . $d_phone_no;
+    $_POST['d_avail_from'] = $d_avail_from;
+    $_POST['d_avail_to'] = $d_avail_to;
+    $_POST['d_avail_status'] = $d_avail_status;
+    $_POST['d_fee'] = $d_fee;
+    $_POST['d_rating'] = $d_rating;
+//         show($_POST);
+//        print_r();
+    return $errors;
+
 }
 
 function generate_token($length = 64)
@@ -82,7 +238,7 @@ function check_remember_me()
 //        var_dump($row);
         if ($row) {
 //            login_user($row);
-            
+
             return true;
         } else {
             clear_remember_me();

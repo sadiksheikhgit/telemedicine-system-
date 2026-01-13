@@ -12,6 +12,7 @@
                 <a href="<?php echo ROOT ?>/admin" class="menu-btn">Dashboard</a>
                 <a href="<?php echo ROOT ?>/admin/manage_doctors" class="menu-btn ">Manage Doctors</a>
                 <a href="<?php echo ROOT ?>/admin/manage_patients" class="menu-btn active">Manage Patients</a>
+                <a href="<?php echo ROOT ?>/admin/manage_appointments" class="menu-btn">Manage Appointments</a>
                 <a href="#" class="menu-btn">Announcements</a>
             </div>
             <div class="bottom">

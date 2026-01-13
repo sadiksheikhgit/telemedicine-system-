@@ -3,6 +3,37 @@ body{
     font-size: 14px;
 
 }
+.add-row input, .add-row select {
+    width: 90%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+.add-row {
+    background-color: #f0f8ff;
+}
+.btn-save {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.btn-save:hover {
+    background-color: #218838;
+}
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
 .container {
     margin-top: 20px;
     padding: 15px;
@@ -80,6 +111,7 @@ table {
     margin: 0 10px;
     width: 100%;
     border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 th, td {
     border: 1px solid #ddd;
