@@ -1,4 +1,5 @@
 <?php
+
 class Admin
 {
     use Controller;
@@ -17,18 +18,23 @@ class Admin
             redirect('login');
         }
         $doctor = new Doctor;
-        $doctors = $doctor->find_all();
-        
+        $doctors = $doctor->find_all(100);
+
         $patient = new Patient;
-        $patients = $patient->find_all();
-        $data = [  
+        $patients = $patient->find_all(100);
+
+        $appointment = new Appointment;
+        $appointments = $appointment->find_all(100);
+        $data = [
             'user' => $user,
             'title' => 'Admin Dashboard - Telemedicine++',
             'doctors_count' => count($doctors),
             'patients_count' => count($patients),
+            'appointments_count' => count($appointments),
         ];
         $this->view('admin/dashboard', $data);
     }
+
     public function manage_doctors()
     {
         $user = get_user();
@@ -36,28 +42,189 @@ class Admin
             redirect('login');
         }
         $doctor = new Doctor;
-        $doctors = $doctor->find_all();
+    
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (isset($_POST['action']) && $_POST['action'] == 'update') {
+                $original_d_reg_no = $_POST['original_d_reg_no'];
+                $updatedData = [
+                    'd_reg_no' => $_POST['d_reg_no'],
+                    'd_first_name' => $_POST['d_first_name'],
+                    'd_last_name' => $_POST['d_last_name'],
+                    'd_title' => $_POST['d_title'],
+                    'd_birth_date' => $_POST['d_birth_date'],
+                    'd_gender' => $_POST['d_gender'],
+                    'd_specialty' => $_POST['d_specialty'],
+                    'd_email' => $_POST['d_email'],
+                    'd_password' => $_POST['d_password'],
+                    'd_phone_no' => $_POST['d_phone_no'],
+                    'd_avail_from' => $_POST['d_avail_from'],
+                    'd_avail_to' => $_POST['d_avail_to'],
+                    'd_avail_status' => $_POST['d_avail_status'],
+                    'd_fee' => $_POST['d_fee'],
+                    'd_rating' => $_POST['d_rating'],
+                ];
+                $doctor->update($original_d_reg_no, $updatedData, 'd_reg_no');
+            } else {
+                // Process form submission to add a new doctor
+                
+            }
+            // Redirect to avoid resubmission
+//            redirect('admin/manage_doctors');
+        }
         
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            // Process deletion of a doctor
+            if (isset($_GET['d_reg_no'])) {
+                $d_reg_no = $_GET['d_reg_no'];
+                var_dump($d_reg_no);
+                $doctor->delete($d_reg_no, 'd_reg_no');
+                }
+            // Redirect to avoid resubmission
+//                redirect('admin/manage_doctors');
+        }
+    
+        $doctors = $doctor->find_all();
         $data = [
             'user' => $user,
             'doctors' => $doctors,
             'title' => 'Manage Doctors - Telemedicine++',
         ];
+    
         $this->view('admin/manage_doctors', $data);
     }
-    public function manage_patients(){
+    public function add_doctor(){
+        $errors = [];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            header('Content-Type: application/json');
+            $doctor = new Doctor();
+            $newData = [
+                'd_reg_no' => $_POST['d_reg_no'],
+                'd_first_name' => $_POST['d_first_name'],
+                'd_last_name' => $_POST['d_last_name'],
+                'd_title' => $_POST['d_title'],
+                'd_birth_date' => $_POST['d_birth_date'],
+                'd_gender' => $_POST['d_gender'] ?? '',
+                'd_specialty' => $_POST['d_specialty'],
+                'd_email' => $_POST['d_email'],
+                'd_password' => $_POST['d_password'],
+                'd_phone_no' => $_POST['d_phone_no'],
+                'd_avail_from' => $_POST['d_avail_from'],
+                'd_avail_to' => $_POST['d_avail_to'],
+                'd_avail_status' => $_POST['d_avail_status'] ?? '',
+                'd_fee' => $_POST['d_fee'],
+                'd_rating' => $_POST['d_rating'],
+            ];
+            $errors = validate_core($newData);
+            if(!empty($errors)){
+                echo json_encode([
+                    'status' => 'error',
+                    'errors' => $errors
+                ]);
+                exit;
+            }
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Form submitted successfully'
+            ]);
+//            print_r($newData); // be sure to comment it out after debugging
+            $doctor->insert($newData);
+//            $this->view('admin/manage_doctors');
+            exit;
+        }
+        $this->view('admin/add_doctor', ['errors' => $errors]);
+    }
+    public function update_doctor(){
+        $d_reg_no = $_GET['d_reg_no'];
+        $doctor = new Doctor();
+        $doctor_data = $doctor->first(['d_reg_no' => $d_reg_no]);
+        $data = [
+            'd_reg_no' => $doctor_data['d_reg_no'],
+            'd_first_name' => $doctor_data['d_first_name'],
+            'd_last_name' => $doctor_data['d_last_name'],
+            'd_title' => $doctor_data['d_title'],
+            'd_birth_date' => $doctor_data['d_birth_date'],
+            'd_gender' => $doctor_data['d_gender'],
+            'd_email' => $doctor_data['d_email'],
+            'd_password' => $doctor_data['d_password'],
+            'd_specialty' => $doctor_data['d_specialty'],
+            'd_phone_no' => $doctor_data['d_phone_no'],
+            'd_avail_from' => $doctor_data['d_avail_from'],
+            'd_avail_to' => $doctor_data['d_avail_to'],
+            'd_avail_status' => $doctor_data['d_avail_status'],
+            'd_fee' => $doctor_data['d_fee'],
+            'd_rating' => $doctor_data['d_rating']
+        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            header('Content-Type: application/json');
+            $errors = validate_core($_POST);
+            if (!empty($errors)) {
+                echo json_encode([
+                    'status' => 'error',
+                    'errors' => $errors
+                ]);
+                exit;
+            }
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Form submitted successfully'
+            ]);
+            $updatedData = [
+                'd_reg_no' => $_POST['d_reg_no'],
+                'd_first_name' => $_POST['d_first_name'],
+                'd_last_name' => $_POST['d_last_name'],
+                'd_title' => $_POST['d_title'],
+                'd_birth_date' => $_POST['d_birth_date'],
+                'd_gender' => $_POST['d_gender'],
+                'd_specialty' => $_POST['d_specialty'],
+                'd_email' => $_POST['d_email'],
+                'd_password' => $_POST['d_password'],
+                'd_phone_no' => $_POST['d_phone_no'],
+                'd_avail_from' => $_POST['d_avail_from'],
+                'd_avail_to' => $_POST['d_avail_to'],
+                'd_avail_status' => $_POST['d_avail_status'],
+                'd_fee' => $_POST['d_fee'],
+                'd_rating' => $_POST['d_rating']
+            ];
+            $doctor->update($d_reg_no, $updatedData, 'd_reg_no');
+            exit;
+        }
+        $this->view('admin/update_doctor', $data);
+    }
+
+    public
+    function manage_patients()
+    {
         $user = get_user();
         if ($user->role != 'admin') {
             redirect('login');
         }
         $patient = new Patient;
         $patients = $patient->find_all();
-        
+
         $data = [
             'user' => $user,
             'patients' => $patients,
             'title' => 'Manage Patients - Telemedicine++',
         ];
         $this->view('admin/manage_patients', $data);
+    }
+
+    public
+    function manage_appointments()
+    {
+        $appointment = new Appointment;
+        $appointments = $appointment->find_all();
+
+        $data = [
+            'appointments' => $appointments,
+            'title' => 'Manage Appointments - Telemedicine++',
+        ];
+        $this->view('admin/manage_appointments', $data);
+    }
+
+    public function delete_doctor()
+    {
+
     }
 }
