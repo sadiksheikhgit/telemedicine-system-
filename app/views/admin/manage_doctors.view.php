@@ -44,26 +44,24 @@
                         <th>Fee</th>
                         <th>Rating</th>
                         <th>Action</th>
-                    </tr>
-                    <!--                    add row-->
-                    
+                    </tr>                    
                     <?php foreach ($data['doctors'] as $doctor): ?>
                         <tr>
                             <td style="word-break: break-all;"><?php echo htmlspecialchars($doctor['d_reg_no']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_first_name']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_last_name']); ?></td>
-                            <td style="word-break: break-all;"><?php echo htmlspecialchars($doctor['d_title']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_birth_date']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_gender']); ?></td>
-                            <td style="word-break: break-all;"><?php echo htmlspecialchars($doctor['d_email']); ?></td>
-                            <td style="word-break: break-all;"><?php echo htmlspecialchars($doctor['d_password']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_specialty']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_phone_no']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_avail_from']) . " to"; ?>
-                                <br> <?php echo htmlspecialchars($doctor['d_avail_to']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_avail_status']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_fee']); ?></td>
-                            <td><?php echo htmlspecialchars($doctor['d_rating']) ?? 0; ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_first_name'] ?? ""); ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_last_name'] ?? ""); ?></td>
+                            <td style="word-break: break-all;"><?php echo htmlspecialchars($doctor['d_title'] ?? "") ; ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_birth_date'] ?? ""); ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_gender'] ?? ""); ?></td>
+                            <td style="word-break: break-all;"><?php echo htmlspecialchars($doctor['d_email'] ?? ""); ?></td>
+                            <td style="word-break: break-all;"><?php echo htmlspecialchars($doctor['d_password'] ?? ""); ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_specialty'] ?? ""); ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_phone_no'] ?? ""); ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_avail_from'] ?? "") . " to"; ?>
+                                <br> <?php echo htmlspecialchars($doctor['d_avail_to'] ?? ""); ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_avail_status'] ?? ""); ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_fee'] ?? ""); ?></td>
+                            <td><?php echo htmlspecialchars($doctor['d_rating'] ?? 0) ; ?></td>
                             <td>
                                 <!--                    <button class="btn btn-add">Add</button>-->
                                 <form action="<?php echo ROOT ?>/admin/manage_doctors" method="GET" onsubmit="return confirm('Are you sure?')">
@@ -76,84 +74,6 @@
                                     </button>
                                 </a>
                             </td>
-                        </tr>
-                        <!-- Edit Row (Hidden by default) -->
-                        <tr id="edit_<?php echo htmlspecialchars($doctor['d_reg_no']); ?>" style="display: none;">
-                            <form method="POST" action="<?php echo ROOT ?>/admin/manage_doctors">
-                                <input type="hidden" name="action" value="update">
-                                <input type="hidden" name="original_d_reg_no"
-                                       value="<?php echo htmlspecialchars($doctor['d_reg_no']); ?>">
-
-                                <td><input type="text" name="d_reg_no"
-                                           value="<?php echo htmlspecialchars($doctor['d_reg_no']); ?>" required></td>
-                                <td><input type="text" name="d_first_name"
-                                           value="<?php echo htmlspecialchars($doctor['d_first_name']); ?>" required>
-                                </td>
-                                <td><input type="text" name="d_last_name"
-                                           value="<?php echo htmlspecialchars($doctor['d_last_name']); ?>" required>
-                                </td>
-                                <td>
-                                    <select name="d_title" required>
-                                        <option value="Dr." <?php echo $doctor['d_title'] == 'Dr.' ? 'selected' : ''; ?>>
-                                            Dr.
-                                        </option>
-                                        <option value="Prof." <?php echo $doctor['d_title'] == 'Prof.' ? 'selected' : ''; ?>>
-                                            Prof.
-                                        </option>
-                                        <option value="Assoc. Prof." <?php echo $doctor['d_title'] == 'Assoc. Prof.' ? 'selected' : ''; ?>>
-                                            Assoc. Prof.
-                                        </option>
-                                    </select>
-                                </td>
-                                <td><input type="date" name="d_birth_date"
-                                           value="<?php echo htmlspecialchars($doctor['d_birth_date']); ?>" required>
-                                </td>
-                                <td>
-                                    <select name="d_gender" required>
-                                        <option value="Male" <?php echo $doctor['d_gender'] == 'Male' ? 'selected' : ''; ?>>
-                                            Male
-                                        </option>
-                                        <option value="Female" <?php echo $doctor['d_gender'] == 'Female' ? 'selected' : ''; ?>>
-                                            Female
-                                        </option>
-                                    </select>
-                                </td>
-                                <td><input type="email" name="d_email"
-                                           value="<?php echo htmlspecialchars($doctor['d_email']); ?>" required></td>
-                                <td><input type="password" name="d_password" placeholder="Leave blank to keep current">
-                                </td>
-                                <td><input type="text" name="d_specialty"
-                                           value="<?php echo htmlspecialchars($doctor['d_specialty']); ?>" required>
-                                </td>
-                                <td><input type="tel" name="d_phone_no"
-                                           value="<?php echo htmlspecialchars($doctor['d_phone_no']); ?>" required></td>
-                                <td>
-                                    <input type="date" name="d_avail_from"
-                                           value="<?php echo htmlspecialchars($doctor['d_avail_from']); ?>" required>
-                                    <input type="date" name="d_avail_to"
-                                           value="<?php echo htmlspecialchars($doctor['d_avail_to']); ?>" required>
-                                </td>
-                                <td>
-                                    <input type="radio" name="d_avail_status"
-                                           value="Online" <?php echo $doctor['d_avail_status'] == 'Online' ? 'checked' : ''; ?>
-                                           required>Online
-                                    <input type="radio" name="d_avail_status"
-                                           value="Offline" <?php echo $doctor['d_avail_status'] == 'Offline' ? 'checked' : ''; ?>
-                                           required>Offline
-                                </td>
-                                <td><input type="number" name="d_fee" step="100"
-                                           value="<?php echo htmlspecialchars($doctor['d_fee']); ?>" required></td>
-                                <td><input type="number" name="d_rating" step="1"
-                                           value="<?php echo htmlspecialchars($doctor['d_rating'] ?? 0); ?>" required>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-save">Save</button>
-                                    <button type="button" class="btn btn-cancel"
-                                            onclick="cancelEdit('<?php echo htmlspecialchars($doctor['d_reg_no']); ?>')">
-                                        Cancel
-                                    </button>
-                                </td>
-                            </form>
                         </tr>
                     <?php endforeach; ?>
                 </table>

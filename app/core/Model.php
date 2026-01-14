@@ -43,7 +43,7 @@ trait Model
     {
         $this->limit = $limit;
         $this->offset = $offset;
-        return $this->find_all();
+        return $this->find_all(3);
     }
 
 //    public function where($data, $data_not = [])

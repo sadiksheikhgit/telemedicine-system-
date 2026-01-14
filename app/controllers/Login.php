@@ -15,7 +15,7 @@ class Login
             $arr['email'] = $_POST['email'];
             $arr['password'] = $_POST['password'];
             $row = $user->first($arr);
-            show($row);
+//            show($row);
             if ($row) {
                 if ($row['password'] === $_POST['password']) {
                     init_session();

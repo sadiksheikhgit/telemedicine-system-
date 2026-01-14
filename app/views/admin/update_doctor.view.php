@@ -128,12 +128,12 @@
                             <span>Availability Status</span>
                             <div class="radio-group">
                                 <label for="online">Online
-                                    <input type="radio" id="online" name="d_avail_status" value="Online" <?php if (isset($data['d_avail_status']) && $data['d_avail_status'] === 'Online') echo ' checked';?>>
+                                    <input type="radio" id="online" name="d_avail_status" value="Online" <?= (isset($data['d_avail_status']) && $data['d_avail_status'] === 'Online') ? ' checked' : '';?>>
                                 </label>
                             </div>
                             <div class="radio-group">
                                 <label for="offline">Offline
-                                    <input type="radio" id="offline" name="d_avail_status" value="Offline" <?php if (isset($data['d_avail_status']) && $data['d_avail_status'] === 'Offline') echo ' checked';?>>
+                                    <input type="radio" id="offline" name="d_avail_status" value="Offline" <?= (isset($data['d_avail_status']) && $data['d_avail_status'] === 'Offline') ? ' checked' : '';?>>
                                 </label>
                             </div>
                         </div>

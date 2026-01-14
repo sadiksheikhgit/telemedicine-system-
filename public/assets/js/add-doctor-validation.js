@@ -15,7 +15,7 @@
                 });
                 
                 if (data.status === 'error') {
-                    console.log(data.errors);
+                    // console.log(data.errors);
                     for (let key in data.errors) {
                         document.getElementById(key + '_error').innerText = data.errors[key] || '';
                     }
