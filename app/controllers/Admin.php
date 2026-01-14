@@ -41,19 +41,7 @@ class Admin
         if ($user->role != 'admin') {
             redirect('login');
         }
-        $doctor = new Doctor;
-
-
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            // Process deletion of a doctor
-            if (isset($_GET['d_reg_no'])) {
-                $d_reg_no = $_GET['d_reg_no'];
-                var_dump($d_reg_no);
-                $doctor->delete($d_reg_no, 'd_reg_no');
-            }
-            // Redirect to avoid resubmission
-//                redirect('admin/manage_doctors');
-        }
+        $doctor = new Doctor;        
 
         $doctors = $doctor->find_all();
         $data = [
@@ -102,6 +90,14 @@ class Admin
             ]);
 //            print_r($newData); // be sure to comment it out after debugging
             $doctor->insert($newData);
+            $user = new User();
+            $userData = [
+                'email' => $_POST['d_email'],
+                'password' => $_POST['d_password'],
+                'role' => 'doctor',
+                'd_reg_no' => $_POST['d_reg_no']
+            ];
+            $user->insert($userData);
 //            $this->view('admin/manage_doctors');
             exit;
         }
@@ -203,6 +199,16 @@ class Admin
 
     public function delete_doctor()
     {
-
+        $doctor = new Doctor();
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            // Process deletion of a doctor
+            if (isset($_GET['d_reg_no'])) {
+                $d_reg_no = $_GET['d_reg_no'];
+                var_dump($d_reg_no);
+                $doctor->delete($d_reg_no, 'd_reg_no');
+            }
+            // Redirect to avoid resubmission
+//                redirect('admin/manage_doctors');
+        }
     }
 }

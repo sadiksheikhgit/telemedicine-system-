@@ -23,7 +23,7 @@
         <!--    doctor form -->
         <div id="doctor-form" class="form-container">
             <h1>Doctor's Information</h1>
-            <form method="POST" action="<?php echo ROOT ?>/signup" id="d_Form">
+            <form method="POST" action="<?php echo ROOT ?>/signup/signup_doctor" id="d_Form">
                 <div class="form-group">
                     <label for="d_reg_no">Registration number (BMDC)
                         <input type="text" name="d_reg_no" placeholder="16 digit number"></label>
@@ -73,14 +73,14 @@
                     <label for="d_specialty">Specialty/Department</label>
                     <select id="specialty" name="d_specialty">
                         <option value="Select">Select</option>
-                        <option value="cardiology">Cardiology</option>
-                        <option value="dermatology">Dermatology</option>
-                        <option value="neurology">Neurology</option>
-                        <option value="pediatrics">Pediatrics</option>
-                        <option value="psychiatry">Psychiatry</option>
-                        <option value="radiology">Radiology</option>
-                        <option value="surgery">Surgery</option>
-                        <option value="other">Other</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Neurology">Neurology</option>
+                        <option value="Pediatrics">Pediatrics</option>
+                        <option value="Psychiatry">Psychiatry</option>
+                        <option value="Radiology">Radiology</option>
+                        <option value="Surgery">Surgery</option>
+                        <option value="Other">Other</option>
                     </select>
                         <span class="errors" id="d_specialty_error"></span>
                 </div>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="confirm-button" id="submit-doctor" ->Confirm</button>
+                <button type="submit" class="confirm-button" id="submit-doctor">Confirm</button>
                 <a href="#" class="back-btn">
                     <img src="<?php echo ROOT ?>/assets/images/logos/arrow-left.svg" alt="arrow-left" width="40"
                          height="40">
@@ -138,42 +138,49 @@
         <!--    patient form-->
         <div id="patient-form" class="form-container">
             <h1>Patient's Information</h1>
-            <form>
+            <form method="POST" action="<?php echo ROOT ?>/signup/signup_patient" id="p_Form">
                 <div class="form-group">
                     <label>NID number</label>
-                    <input type="text" placeholder="12 or 16 digit number">
+                    <input type="text" placeholder="12 or 16 digit number" name="p_nid_no">
+                    <span class="errors" id="p_nid_no_error"></span>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" placeholder="starts with Capital ">
+                        <label>First Name
+                        <input type="text" placeholder="starts with Capital " name="p_first_name">
+                        </label>
+                        <span class="errors" id="p_first_name_error"></span>
                     </div>
                     <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" placeholder="starts with Capital">
+                        <label>Last Name
+                        <input type="text" placeholder="starts with Capital" name="p_last_name">
+                        </label>
+                        <span class="errors" id="p_last_name_error"></span>
                     </div>
                 </div>
 
                 <div class="birthday-gender-row">
                     <div class="birthday-field">
-                        <label>Birthday</label>
+                        <label for="p_birth_date">Birthday</label>
                         <div class="input-wrapper">
-                            <input type="date" placeholder="Birthday">
+                            <input type="date" placeholder="Birthday" name="p_birth_date">
+                            <span class="errors" id="p_birth_date_error"></span>
                         </div>
                     </div>
                     <div class="gender-field">
                         <div class="gender-options">
                             <span class="gender-label">Gender:</span>
                             <div class="radio-group">
-                                <input type="radio" id="male" name="gender">
+                                <input type="radio" id="male" name="p_gender" value="Male">
                                 <label for="male">Male</label>
                             </div>
                             <div class="radio-group">
-                                <input type="radio" id="female" name="gender">
+                                <input type="radio" id="female" name="p_gender" value="Female">
                                 <label for="female">Female</label>
                             </div>
                         </div>
+                        <span class="errors" id="p_gender_error"></span>
                     </div>
                 </div>
 
@@ -181,19 +188,20 @@
                     <div class="sensory-options">
                         <span class="sensory-label">Sensory Disabilities?</span>
                         <div class="radio-group">
-                            <input type="radio" id="yes" name="sensory">
+                            <input type="radio" id="yes" name="is_sensory_disabled" value="Yes">
                             <label for="yes">Yes</label>
                         </div>
                         <div class="radio-group">
-                            <input type="radio" id="no" name="sensory">
+                            <input type="radio" id="no" name="is_sensory_disabled" value="No">
                             <label for="no">No</label>
                         </div>
                     </div>
+                    <span class="errors" id="is_sensory_disabled_error"></span>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Blood Group</label>
-                        <select id="blood-group" name="blood-group">
+                        <select id="blood-group" name="p_blood_group">
                             <option value="Select">Select</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -204,26 +212,30 @@
                             <option value="O+">O+</option>
                             <option value="O-">O-</option>
                         </select>
+                        <span class="errors" id="p_blood_group_error"></span>
                     </div>
                     <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" placeholder="Your address">
+                        <label for="p_address">Address</label>
+                        <input type="text" placeholder="Your address" name="p_address">
+                        <span class="errors" id="p_address_error"></span>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Email</label>
+                        <label for="p_email">Email</label>
                         <div class="input-wrapper">
-                            <input type="email" placeholder="example@gmail.com">
+                            <input type="email" placeholder="example@gmail.com" name="p_email">
                         </div>
+                        <span class="errors" id="p_email_error"></span>
                     </div>
                     <div class="form-group">
-                        <label>Phone number</label>
+                        <label for="p_phone_no">Phone number</label>
                         <div class="phone-row">
                             <span class="country-code">+880</span>
-                            <input type="text" class="phone-input" placeholder="xxxxxxxxxx">
+                            <input type="tel" class="phone-input" placeholder="xxxxxxxxxx" name="p_phone_no">
                         </div>
+                        <span class="errors" id="p_phone_no_error"></span>
                     </div>
                 </div>
 
@@ -236,11 +248,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Password</label>
+                    <label for="p_password">Password</label>
                     <div class="input-wrapper">
-                        <input type="password" value="" placeholder="Create a password">
+                        <input type="password" value="" placeholder="Create a password" name="p_password">
                         <span class="input-icon eye-icon">👁</span>
                     </div>
+                    <span class="errors" id="p_password_error"></span>
                     <div class="password-requirements">
                         <div>8+ characters</div>
                         <div>at least one uppercase letter</div>
@@ -251,7 +264,7 @@
                 </div>
 
                 <button type="submit" class="confirm-button">Confirm</button>
-                <a href="#" class="back-btn"><img src="<?php echo ROOT ?>/assets/images/logos/arrow-left.svg"
+                <a href="<?php echo ROOT?>/" class="back-btn"><img src="<?php echo ROOT ?>/assets/images/logos/arrow-left.svg"
                                                   alt="arrow-left" width="40" height="40"></a>
             </form>
         </div>
