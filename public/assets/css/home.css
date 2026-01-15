@@ -1,0 +1,239 @@
+
+/* image slider */
+/* body{
+    background-color: red;
+} */
+ body{
+    margin: 0;
+ }
+.container{
+    /* width: 100%; */
+    padding: 2rem;
+}
+.slider-wrapper{
+    position: relative;
+    max-width: 1200px;
+    padding: 0 20px;
+    /* width: 100vw; */ 
+    margin: 0 auto;
+}
+.slider{
+    display: flex;
+    width: 100%;
+    /* height: 50%; */
+    aspect-ratio: 25/9;
+    overflow: hidden;
+    /* overflow-x: auto; */
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    box-shadow: 0 1.5rem -0.75rem hsla(0, 0% , 0%, 0.25);
+    border-radius: 0.5rem;
+}
+
+.slider img{
+    flex: 0 0 100%;  /* equallling szied */
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    object-fit: contain;
+    object-position: center;
+}
+.slider-nav{
+    display: flex;
+    column-gap: 1.5rem;
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+}
+.slider-nav a{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #000;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+}
+.slider-nav a:hover{
+    opacity: 1;
+    transform: scale(1.5);
+}
+
+
+/* services cards */
+
+.services{
+    max-width: 100%;
+    margin: 60px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.serHeader{
+    margin-bottom: 40px;
+    padding-left: 15;
+    text-align: center;
+}
+
+.serHeader h1{
+    font-family: 'Poppins' , sans-serif;
+    font-size: 2rem;
+    color: rgb(37, 87, 84);
+}
+
+.serGrid{
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.serGrid .card{
+    flex: 1;
+    min-width: 250px;
+    max-width: 400px;
+    height: 250px;
+    border: 1px solid rgb(73, 111, 149);
+    padding: 20px;
+    text-decoration: none;
+    color: brown;
+    transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+}
+
+.serGrid .card img{
+    width: 200px;
+    height: 100px;
+    object-fit: contain;
+    transform: none;
+}
+
+.serGrid .card h3{
+    font-size: 1.5rem;
+}
+
+.serGrid .card p{
+    font-size: 1rem;
+
+}
+/* partners */
+.partners{
+    width: 100%;
+    background-color: #fff;
+    padding: 80px 0;
+}
+.partner-container{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    padding: 0 20px;
+}
+.partnertext{
+    flex: 0 0 350px;
+}
+.partnertext h1{
+    font-family: 'Poppins' , sans-serif;
+    font-size: 2rem;
+    color:  rgb(37, 87, 84);
+    line-height: 1.2;
+}
+.partertext p{
+    color: rgb(1, 14, 9);
+}
+
+.partnerGrid{
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+.partnerGrid img{
+    width: 100%;
+    height: 140px;
+    padding: 30px;
+    object-fit: contain;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+
+/* faq */
+
+
+.wrapper{
+    width: 80%;
+    margin: auto;
+}
+
+.wrapper  h1{
+    margin: 1.5rem;
+    text-align: center;
+    letter-spacing:  3px;
+}
+.faq{
+    border-bottom: 1px solid #eee;
+}
+
+.accordian{
+    font-family: 'Roboto' , sans-serif;
+    background-color: rgb(238, 232, 232);
+    color: black;
+    cursor: pointer;
+    font-size: 1.2rem;
+    width: 100%;
+    padding: 2rem 2.5rem;
+    border: none;
+    outline: none;
+    transition: 0.4s; 
+    /* button color change */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    font-weight: bold;
+}
+
+.accordian.active{
+    background-color: white;
+}
+
+.accordian .icon{
+    font-size: 1.6rem;
+}
+/* 
+.active,
+.accordian:hover{
+    background-color: aqua;
+} */
+.pannel{
+    padding: 0 2rem 2.5rem 2rem;
+    background-color: white;
+    overflow: hidden;
+    background-color: white;
+    display: none;
+}
+.pannel p{
+    color: black;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+
+.faq{
+    border: 1px solid rgb(60, 56, 56);
+    margin: 10px 0;
+}
+
+.faq.active{
+    border: none;
+}
+    
