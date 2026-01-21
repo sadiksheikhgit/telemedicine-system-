@@ -187,8 +187,104 @@ function validate_core_doctor($data)
 }
 function validate_core_patient($data)
 {
-    // write here similar to validate_core_doctor but for patient values
-}
+        $errors = [];
+
+// validate firstname 
+    $p_first_name = trim($data['p_first_name'] ?? '');
+    if (!empty($p_first_name)) {
+        if (!preg_match('/^[a-zA-Z]+$/', $p_first_name)) {
+            $errors['p_first_name'] = "First name can only contain letters.";
+        }
+        if (strlen($p_first_name) < 2 || strlen($p_first_name) > 30) {
+            $errors['p_first_name'] = "First name must be between 2 and 30 characters.";
+        }
+    } else {
+        $errors['p_first_name'] = "First name is required.";
+    }
+
+    //validate lastname
+    $p_last_name = trim($data['p_last_name'] ?? '');
+    if (!empty($p_last_name)) {
+        if (!preg_match('/^[a-zA-Z]+$/', $p_last_name)) {
+            $errors['p_last_name'] = "Last name can only contain letters.";
+        }
+        if (strlen($p_last_name) < 2 || strlen($p_last_name) > 30) {
+            $errors['p_last_name'] = "Last name must be between 2 and 30 characters.";
+        }
+    } else {
+        $errors['p_last_name'] = "Last name is required.";
+    }
+
+    //birthdate validation
+    $p_birth_date = trim($data['p_birth_date'] ?? '');
+    if (empty($p_birth_date)) {
+        $errors['p_birth_date'] = "Birthday is required.";
+    } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $p_birth_date)) {
+        $errors['p_birth_date'] = "Invalid date format. Use YYYY-MM-DD.";
+    } else {
+        $date_parts = explode('-', $p_birth_date);
+        if (!checkdate($date_parts[1], $date_parts[2], $date_parts[0])) {
+            $errors['p_birth_date'] = "Invalid date.";
+        }
+    }
+    //validate gender
+    $p_gender = trim($data['p_gender'] ?? '');
+    if (empty($p_gender)) {
+        $errors['p_gender'] = "Gender is required.";
+    }
+    // validate sensory disability
+    $is_sensory_disabled = trim($data['is_sensory_disabled'] ?? '');
+    if (empty($is_sensory_disabled)) {
+        $errors['is_sensory_disabled'] = "Information is required.";
+    }
+     // validate blood group other than select
+    $p_blood_group = trim($data['p_blood_group'] ?? '');
+    if (empty($ip_blood_group) || $p_blood_group == 'select') {
+        $errors['p_blood_group'] = "Blood Group is required.";
+    }
+    // validate email
+    $p_email = trim($data['p_email'] ?? '');
+    if (empty($p_email)) {
+        $errors['p_email'] = "Email is required.";
+    } elseif (!filter_var($p_email, FILTER_VALIDATE_EMAIL)) {
+        $errors['p_email'] = "Invalid email format.";
+    }
+    // validate password
+    $p_password = trim($data['p_password'] ?? '');
+    if (empty($p_password)) {
+        $errors['p_password'] = "Password is required.";
+    } elseif (strlen($p_password) < 8) {
+        $errors['p_password'] = "Password must be at least 8 characters long.";
+    } elseif (!preg_match('/[A-Z]/', $p_password)) {
+        $errors['p_password'] = "Password must contain at least one uppercase letter.";
+    } elseif (!preg_match('/[a-z]/', $p_password)) {
+        $errors['p_password'] = "Password must contain at least one lowercase letter.";
+    } elseif (!preg_match('/\d/', $p_password)) {
+        $errors['p_password'] = "Password must contain at least one digit.";
+    } elseif (!preg_match('/[\W_]/', $p_password)) {
+        $errors['p_password'] = "Password must contain at least one special character.";
+    }
+   
+    // validate phone no
+    $p_phone_no = trim($data['p_phone_no'] ?? '');
+    if (empty($p_phone_no)) {
+        $errors['p_phone_no'] = "Phone number is required.";
+    } elseif (!preg_match('/^[1-9]\d{9}$/', $p_phone_no)) {
+        $errors['p_phone_no'] = "Invalid phone number format.";
+    }
+
+    $_POST['p_first_name'] = ucfirst($p_first_name);
+    $_POST['p_last_name'] = ucfirst($p_last_name);
+    $_POST['p_birth_date'] = $p_birth_date;
+    $_POST['p_gender'] = $p_gender;
+    $_POST['is_sensory_disabled'] = $is_sensory_disabled;
+    $_POST['p_blood_group'] = $p_blood_group;
+    $_POST['p_email'] = strtolower($p_email);
+    $_POST['p_password'] = password_hash($p_password, PASSWORD_BCRYPT);
+    $_POST['p_phone_no'] = "+880" . $p_phone_no;
+
+    return $errors;
+    }
 
 function generate_token($length = 64)
 {
